@@ -249,7 +249,7 @@ dnl An m4 macro for use with m4_foreach_w and friends.  You should modify this
 dnl list if you want to add a known file system.  The list is just whitespace
 dnl separated, so you can use newlines and tabs as well.
 m4_define([known_filesystems_m4_w],
-          [daos nfs ufs pvfs2 testfs xfs panfs lustre gpfs ime quobytefs])dnl
+          [pmembb daos nfs ufs pvfs2 testfs xfs panfs lustre gpfs ime quobytefs])dnl
 dnl
 dnl An m4 macro for use with m4_foreach and friends.  Expands to a quoted list of
 dnl quoted elements.  A bit easier to use without unintended expansion than the
@@ -1067,6 +1067,10 @@ if test -n "$file_system_quobytefs" ; then
 	PAC_APPEND_FLAG([-lquobyte],[LIBS])
 fi
 
+if test -n "$file_system_pmembb"; then
+  AC_DEFINE(ROMIO_PMEMBB,1,[Define for ROMIO with PMEMBB])
+fi
+
 #
 # Verify presence of pvfs2.h
 #
@@ -1778,7 +1782,7 @@ AM_PROG_LIBTOOL
 
 # Open MPI: setup the AM_CONDITIONALs to build the different adio devices
  m4_foreach([my_fs],
-  [gpfs, gridftp, hfs, lustre, nfs, ntfs, panfs, pfs, pvfs, piofs, pvfs, pvfs2, sfs, testfs, ufs, xfs, zoidfs],
+  [gpfs, gridftp, hfs, lustre, nfs, ntfs, panfs, pfs, pvfs, piofs, pvfs, pvfs2, pmembb, sfs, testfs, ufs, xfs, zoidfs],
   [AM_CONDITIONAL(BUILD_[]AS_TR_CPP(my_fs), [test -n "$file_system_]my_fs["])])
 
 # support gcov test coverage information
