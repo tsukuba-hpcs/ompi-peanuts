@@ -7,6 +7,11 @@
 #include <sys/uio.h>
 #include <unistd.h>
 
+#include "rpmbb_c.h"
+extern rpmbb_store_t ADIOI_PMEMBB_store;
+
+void ADIOI_PMEMBB_InitColl(MPI_Comm comm, int *error_code);
+void ADIOI_PMEMBB_Term(int *error_code);
 void ADIOI_PMEMBB_Open(ADIO_File fd, int *error_code);
 void ADIOI_PMEMBB_Close(ADIO_File fd, int *error_code);
 void ADIOI_PMEMBB_ReadContig(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,

@@ -17,7 +17,9 @@ romio_other_sources +=                \
     adio/ad_pmembb/ad_pmembb_flush.c  \
     adio/ad_pmembb/ad_pmembb_seek.c   \
     adio/ad_pmembb/ad_pmembb_resize.c \
+		adio/ad_pmembb/ad_pmembb_rpmbb_c.c \
     adio/ad_pmembb/ad_pmembb_hints.c  \
+		adio/ad_pmembb/ad_pmembb_init.c   \
     adio/ad_pmembb/ad_pmembb_delete.c \
     adio/ad_pmembb/ad_pmembb.c
 
