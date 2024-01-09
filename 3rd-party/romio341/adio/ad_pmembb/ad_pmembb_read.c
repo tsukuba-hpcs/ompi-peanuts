@@ -10,25 +10,47 @@ void ADIOI_PMEMBB_ReadContig(ADIO_File fd, void *buf, int count, MPI_Datatype da
                              int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                              int *error_code)
 {
-    int myrank, nprocs;
+    rpmbb_handler_t handler = (rpmbb_handler_t) fd->fs_ptr;
     MPI_Count datatype_size;
+    DEBUG_PRINT(fd->filename);
 
     *error_code = MPI_SUCCESS;
 
-    MPI_Comm_size(fd->comm, &nprocs);
-    MPI_Comm_rank(fd->comm, &myrank);
     MPI_Type_size_x(datatype, &datatype_size);
-    FPRINTF(stdout, "[%d/%d] ADIOI_PMEMBB_ReadContig called on %s\n", myrank, nprocs, fd->filename);
-    if (file_ptr_type != ADIO_EXPLICIT_OFFSET) {
-        offset = fd->fp_ind;
-        fd->fp_ind += datatype_size * count;
-        fd->fp_sys_posn = fd->fp_ind;
-    } else {
-        fd->fp_sys_posn = offset + datatype_size * count;
+
+    off_t absolute_offset = file_ptr_type == ADIO_INDIVIDUAL ? fd->fp_ind : offset;
+    size_t data_size = datatype_size * count;
+    size_t bytes_read = 0;
+    ssize_t ret;
+
+#ifndef NDEBUG
+    FPRINTF(stdout, "[%d/%d]    reading (buf = %p, loc = %lld, sz = %lld)\n", myrank, nprocs, buf,
+            (long long) absolute_offset, (long long) data_size);
+#endif
+
+    while (bytes_read < data_size) {
+        ret = rpmbb_bb_pread(handler, (char *) buf + bytes_read, data_size - bytes_read,
+                             absolute_offset + bytes_read);
+        if (ret < 0) {
+            *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
+            fd->fp_sys_posn = -1;
+            return;
+        }
+#ifndef NDEBUG
+        FPRINTF(stdout, "[%d/%d]    read %ld bytes\n", myrank, nprocs, ret);
+#endif
+
+        if (ret == 0) {
+            return;
+        }
+
+        bytes_read += ret;
     }
 
-    FPRINTF(stdout, "[%d/%d]    reading (buf = %p, loc = %lld, sz = %lld)\n", myrank, nprocs, buf,
-            (long long) offset, (long long) datatype_size * count);
+    fd->fp_sys_posn = absolute_offset + bytes_read;
+    if (file_ptr_type == ADIO_INDIVIDUAL) {
+        fd->fp_ind += bytes_read;
+    }
 
 #ifdef HAVE_STATUS_SET_BYTES
     MPIR_Status_set_bytes(status, datatype, datatype_size * count);
@@ -39,15 +61,8 @@ void ADIOI_PMEMBB_ReadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype d
                               int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                               int *error_code)
 {
-    int myrank, nprocs;
-
+    DEBUG_PRINT(fd->filename);
     *error_code = MPI_SUCCESS;
-
-    MPI_Comm_size(fd->comm, &nprocs);
-    MPI_Comm_rank(fd->comm, &myrank);
-    FPRINTF(stdout, "[%d/%d] ADIOI_PMEMBB_ReadStrided called on %s\n", myrank, nprocs,
-            fd->filename);
-    FPRINTF(stdout, "[%d/%d]    calling ADIOI_GEN_ReadStrided\n", myrank, nprocs);
-
-    ADIOI_GEN_ReadStrided(fd, buf, count, datatype, file_ptr_type, offset, status, error_code);
+    ADIOI_GEN_ReadStrided_naive(fd, buf, count, datatype, file_ptr_type, offset, status,
+                                error_code);
 }

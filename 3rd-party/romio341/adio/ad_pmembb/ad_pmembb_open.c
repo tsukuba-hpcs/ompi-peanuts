@@ -4,17 +4,21 @@
  */
 
 #include "ad_pmembb.h"
+#include "adio/ad_ufs/ad_ufs.h"
 #include "adioi.h"
 
 void ADIOI_PMEMBB_Open(ADIO_File fd, int *error_code)
 {
-    int myrank, nprocs;
+    DEBUG_PRINT(fd->filename);
+    ADIOI_UFS_Open(fd, error_code);
 
-    fd->fd_sys = 1;
-    fd->fd_direct = -1;
-    *error_code = MPI_SUCCESS;
+    if (*error_code != MPI_SUCCESS) {
+        return;
+    }
 
-    MPI_Comm_size(fd->comm, &nprocs);
-    MPI_Comm_rank(fd->comm, &myrank);
-    FPRINTF(stdout, "[%d/%d] ADIOI_PMEMBB_Open called on %s\n", myrank, nprocs, fd->filename);
+    fd->fs_ptr = rpmbb_store_open_attach(mca_hook_pmembb_rpmbb_store, fd->fd_sys);
+    if (fd->fs_ptr == NULL) {
+        *error_code = ADIOI_Err_create_code("ADIOI_PMEMBB_Open", fd->filename, errno);
+        return;
+    }
 }

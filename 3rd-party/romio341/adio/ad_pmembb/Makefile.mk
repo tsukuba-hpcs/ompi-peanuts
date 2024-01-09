@@ -1,6 +1,8 @@
 if BUILD_AD_PMEMBB
 
-noinst_HEADERS += adio/ad_pmembb/ad_pmembb.h
+noinst_HEADERS += \
+	adio/ad_pmembb/ad_pmembb.h \
+	adio/ad_pmembb/rpmbb_c.h
 
 romio_other_sources +=                \
     adio/ad_pmembb/ad_pmembb_close.c  \
@@ -19,7 +21,6 @@ romio_other_sources +=                \
     adio/ad_pmembb/ad_pmembb_resize.c \
 		adio/ad_pmembb/ad_pmembb_rpmbb_c.c \
     adio/ad_pmembb/ad_pmembb_hints.c  \
-		adio/ad_pmembb/ad_pmembb_init.c   \
     adio/ad_pmembb/ad_pmembb_delete.c \
     adio/ad_pmembb/ad_pmembb.c
 

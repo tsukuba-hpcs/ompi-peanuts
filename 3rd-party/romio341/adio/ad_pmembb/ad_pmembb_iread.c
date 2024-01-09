@@ -15,18 +15,12 @@ void ADIOI_PMEMBB_IreadContig(ADIO_File fd, void *buf, int count, MPI_Datatype d
                               int *error_code)
 {
     ADIO_Status status;
-    int myrank, nprocs;
     MPI_Count typesize, len;
+    DEBUG_PRINT(fd->filename);
 
     *error_code = MPI_SUCCESS;
 
-    MPI_Comm_size(fd->comm, &nprocs);
-    MPI_Comm_rank(fd->comm, &myrank);
     MPI_Type_size_x(datatype, &typesize);
-    FPRINTF(stdout, "[%d/%d] ADIOI_PMEMBB_IreadContig called on %s\n", myrank, nprocs,
-            fd->filename);
-    FPRINTF(stdout, "[%d/%d]    calling ADIOI_PMEMBB_ReadContig\n", myrank, nprocs);
-
     len = count * typesize;
     ADIOI_PMEMBB_ReadContig(fd, buf, len, MPI_BYTE, file_ptr_type, offset, &status, error_code);
 
@@ -38,15 +32,10 @@ void ADIOI_PMEMBB_IreadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype 
                                int *error_code)
 {
     ADIO_Status status;
-    int myrank, nprocs;
     MPI_Count typesize;
+    DEBUG_PRINT(fd->filename);
 
-    MPI_Comm_size(fd->comm, &nprocs);
-    MPI_Comm_rank(fd->comm, &myrank);
     MPI_Type_size_x(datatype, &typesize);
-    FPRINTF(stdout, "[%d/%d] ADIOI_PMEMBB_IreadStrided called on %s\n", myrank, nprocs,
-            fd->filename);
-    FPRINTF(stdout, "[%d/%d]    calling ADIOI_PMEMBB_ReadStrided\n", myrank, nprocs);
 
     ADIOI_PMEMBB_ReadStrided(fd, buf, count, datatype, file_ptr_type, offset, &status, error_code);
     MPIO_Completed_request_create(&fd, count * typesize, error_code, request);

@@ -8,11 +8,7 @@
 
 void ADIOI_PMEMBB_Resize(ADIO_File fd, ADIO_Offset size, int *error_code)
 {
-    int myrank, nprocs;
-
+    DEBUG_PRINT(fd->filename);
     *error_code = MPI_SUCCESS;
-
-    MPI_Comm_size(fd->comm, &nprocs);
-    MPI_Comm_rank(fd->comm, &myrank);
-    FPRINTF(stdout, "[%d/%d] ADIOI_PMEMBB_Resize called on %s\n", myrank, nprocs, fd->filename);
+    ADIOI_GEN_Resize(fd, size, error_code);
 }

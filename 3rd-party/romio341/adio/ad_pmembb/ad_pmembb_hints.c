@@ -10,14 +10,7 @@
 #endif
 void ADIOI_PMEMBB_SetInfo(ADIO_File fd, MPI_Info users_info, int *error_code)
 {
-    int myrank, nprocs;
-
+    DEBUG_PRINT(fd->filename);
     *error_code = MPI_SUCCESS;
-
-    MPI_Comm_size(fd->comm, &nprocs);
-    MPI_Comm_rank(fd->comm, &myrank);
-    FPRINTF(stdout, "[%d/%d] ADIOI_PMEMBB_SetInfo called on %s\n", myrank, nprocs, fd->filename);
-    FPRINTF(stdout, "[%d/%d]    calling ADIOI_GEN_SetInfo\n", myrank, nprocs);
-
     ADIOI_GEN_SetInfo(fd, users_info, error_code);
 }

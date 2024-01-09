@@ -8,12 +8,22 @@
 
 void ADIOI_PMEMBB_Close(ADIO_File fd, int *error_code)
 {
-    int myrank, nprocs;
+    int ret;
+    rpmbb_handler_t handler = (rpmbb_handler_t) fd->fs_ptr;
+
+    DEBUG_PRINT(fd->filename);
+
+    if (fd->comm == MPI_COMM_WORLD) {
+        // FIXME: sync only works for MPI_COMM_WORLD, but not for other communicators
+        ret = rpmbb_bb_sync(handler);
+        if (ret != 0) {
+            *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
+            return;
+        }
+    }
+
+    rpmbb_bb_close(handler);
 
     fd->fd_sys = -1;
     *error_code = MPI_SUCCESS;
-
-    MPI_Comm_size(fd->comm, &nprocs);
-    MPI_Comm_rank(fd->comm, &myrank);
-    FPRINTF(stdout, "[%d/%d] ADIOI_PMEMBB_Close called on %s\n", myrank, nprocs, fd->filename);
 }

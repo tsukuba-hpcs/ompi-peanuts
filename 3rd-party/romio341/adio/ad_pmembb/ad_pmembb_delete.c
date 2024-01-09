@@ -8,11 +8,6 @@
 
 void ADIOI_PMEMBB_Delete(const char *filename, int *error_code)
 {
-    int myrank, nprocs;
-
+    DEBUG_PRINT(filename);
     *error_code = MPI_SUCCESS;
-
-    MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
-    MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
-    FPRINTF(stdout, "[%d/%d] ADIOI_PMEMBB_Delete called on %s\n", myrank, nprocs, filename);
 }
