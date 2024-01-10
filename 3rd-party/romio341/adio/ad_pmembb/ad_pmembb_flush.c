@@ -15,13 +15,10 @@ void ADIOI_PMEMBB_Flush(ADIO_File fd, int *error_code)
     *error_code = MPI_SUCCESS;
 
     if (fd->is_open > 0) {
-        // FIXME: rpmbb_bb_sync() is not working other than MPI_COMM_WORLD
-        if (fd->comm == MPI_COMM_WORLD) {
-            ret = rpmbb_bb_sync(handler);
-            if (ret != 0) {
-                *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
-                return;
-            }
+        ret = rpmbb_bb_sync(handler);
+        if (ret != 0) {
+            *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
+            return;
         }
     }
 }

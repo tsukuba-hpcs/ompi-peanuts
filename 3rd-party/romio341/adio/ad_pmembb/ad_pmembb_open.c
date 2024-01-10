@@ -16,7 +16,7 @@ void ADIOI_PMEMBB_Open(ADIO_File fd, int *error_code)
         return;
     }
 
-    fd->fs_ptr = rpmbb_store_open_attach(mca_hook_pmembb_rpmbb_store, fd->fd_sys);
+    fd->fs_ptr = rpmbb_store_open_attach(mca_hook_pmembb_rpmbb_store, fd->comm, fd->fd_sys);
     if (fd->fs_ptr == NULL) {
         *error_code = ADIOI_Err_create_code("ADIOI_PMEMBB_Open", fd->filename, errno);
         return;

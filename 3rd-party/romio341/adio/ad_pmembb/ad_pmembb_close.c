@@ -13,13 +13,10 @@ void ADIOI_PMEMBB_Close(ADIO_File fd, int *error_code)
 
     DEBUG_PRINT(fd->filename);
 
-    if (fd->comm == MPI_COMM_WORLD) {
-        // FIXME: sync only works for MPI_COMM_WORLD, but not for other communicators
-        ret = rpmbb_bb_sync(handler);
-        if (ret != 0) {
-            *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
-            return;
-        }
+    ret = rpmbb_bb_sync(handler);
+    if (ret != 0) {
+        *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
+        return;
     }
 
     rpmbb_bb_close(handler);

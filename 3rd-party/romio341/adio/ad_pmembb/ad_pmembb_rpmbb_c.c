@@ -6,10 +6,14 @@
 #pragma weak rpmbb_store_save = default_rpmbb_store_save
 #pragma weak rpmbb_store_load = default_rpmbb_store_load
 #pragma weak rpmbb_store_open_attach = default_rpmbb_store_open_attach
+#pragma weak rpmbb_store_unlink = default_rpmbb_store_unlink
 #pragma weak rpmbb_bb_close = default_rpmbb_bb_close
 #pragma weak rpmbb_bb_pwrite = default_rpmbb_bb_pwrite
 #pragma weak rpmbb_bb_pread = default_rpmbb_bb_pread
+#pragma weak rpmbb_bb_pread_aggregate = default_rpmbb_bb_pread_aggregate
+#pragma weak rpmbb_bb_wait = default_rpmbb_bb_wait
 #pragma weak rpmbb_bb_sync = default_rpmbb_bb_sync
+#pragma weak rpmbb_bb_size = default_rpmbb_bb_size
 
 rpmbb_store_t default_rpmbb_store_create(MPI_Comm comm, const char *pmem_path, size_t pmem_size)
 {
@@ -35,10 +39,16 @@ int default_rpmbb_store_load(rpmbb_store_t store)
     return -1;
 }
 
-rpmbb_handler_t default_rpmbb_store_open_attach(rpmbb_store_t store, int fd)
+rpmbb_handler_t default_rpmbb_store_open_attach(rpmbb_store_t store, MPI_Comm comm, int fd)
 {
     FPRINTF(stderr, "default_rpmbb_store_open_attach\n");
     return NULL;
+}
+
+int default_rpmbb_store_unlink(rpmbb_store_t store, int fd)
+{
+    FPRINTF(stderr, "default_rpmbb_store_unlink\n");
+    return -1;
 }
 
 int default_rpmbb_bb_close(rpmbb_handler_t handler)
@@ -59,8 +69,27 @@ ssize_t default_rpmbb_bb_pread(rpmbb_handler_t handler, void *buf, size_t count,
     return -1;
 }
 
+ssize_t default_rpmbb_bb_pread_aggregate(rpmbb_handler_t handler, void *buf, size_t count,
+                                         off_t offset)
+{
+    FPRINTF(stderr, "default_rpmbb_bb_pread_aggregate\n");
+    return -1;
+}
+
+int default_rpmbb_bb_wait(rpmbb_handler_t handler)
+{
+    FPRINTF(stderr, "default_rpmbb_bb_wait\n");
+    return -1;
+}
+
 int default_rpmbb_bb_sync(rpmbb_handler_t handler)
 {
     FPRINTF(stderr, "default_rpmbb_bb_sync\n");
+    return -1;
+}
+
+int default_rpmbb_bb_size(rpmbb_handler_t handler, size_t *size)
+{
+    FPRINTF(stderr, "default_rpmbb_bb_size\n");
     return -1;
 }

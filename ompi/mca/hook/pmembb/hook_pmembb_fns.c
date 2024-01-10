@@ -30,6 +30,7 @@ void ompi_hook_pmembb_mpi_init_bottom(int argc, char **argv, int requested, int 
             opal_output(0, "hook:pmembb: rpmbb_store_load failed");
             return;
         }
+        // opal_output(0, "hook:pmembb: rpmbb_store_load succeeded");
     }
 }
 
@@ -43,6 +44,7 @@ void ompi_hook_pmembb_mpi_finalize_top(void)
             opal_output(0, "hook:pmembb: rpmbb_store_save failed");
             return;
         }
+        // opal_output(0, "hook:pmembb: rpmbb_store_save succeeded");
     }
     rpmbb_store_free(mca_hook_pmembb_rpmbb_store);
 }
