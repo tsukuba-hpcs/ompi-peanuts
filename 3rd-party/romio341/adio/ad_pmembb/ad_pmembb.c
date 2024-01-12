@@ -8,10 +8,9 @@
 /* adioi.h has the ADIOI_Fns_struct define */
 #include "adioi.h"
 
-    // ADIOI_PMEMBB_OpenColl,         /* OpenColl */
 struct ADIOI_Fns_struct ADIO_PMEMBB_operations = {
     ADIOI_PMEMBB_Open,             /* Open */
-    ADIOI_GEN_OpenColl,            /* OpenColl */
+    ADIOI_PMEMBB_OpenColl,         /* OpenColl */
     ADIOI_PMEMBB_ReadContig,       /* ReadContig */
     ADIOI_PMEMBB_WriteContig,      /* WriteContig */
     ADIOI_PMEMBB_ReadStridedColl,  /* ReadStridedColl */
