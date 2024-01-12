@@ -8,6 +8,6 @@
 
 void ADIOI_PMEMBB_Get_shared_fp(ADIO_File fd, int size, ADIO_Offset *shared_fp, int *error_code)
 {
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
     *error_code = MPI_ERR_IO;
 }

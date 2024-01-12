@@ -12,7 +12,7 @@ void ADIOI_PMEMBB_WriteContig(ADIO_File fd, const void *buf, int count, MPI_Data
 {
     MPI_Count datatype_size;
     rpmbb_handler_t handler = (rpmbb_handler_t) fd->fs_ptr;
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
 
     *error_code = MPI_SUCCESS;
 
@@ -24,6 +24,9 @@ void ADIOI_PMEMBB_WriteContig(ADIO_File fd, const void *buf, int count, MPI_Data
     ssize_t ret;
 
 #ifndef NDEBUG
+    int myrank, nprocs;
+    MPI_Comm_rank(fd->comm, &myrank);
+    MPI_Comm_size(fd->comm, &nprocs);
     FPRINTF(stdout, "[%d/%d]    writing (buf = %p, loc = %lld, sz = %lld)\n", myrank, nprocs, buf,
             (long long) absolute_offset, (long long) data_size);
 #endif
@@ -60,7 +63,7 @@ void ADIOI_PMEMBB_WriteStrided(ADIO_File fd, const void *buf, int count, MPI_Dat
                                int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                                int *error_code)
 {
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
     *error_code = MPI_SUCCESS;
     ADIOI_GEN_WriteStrided_naive(fd, buf, count, datatype, file_ptr_type, offset, status,
                                  error_code);

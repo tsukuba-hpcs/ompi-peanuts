@@ -10,7 +10,7 @@ void ADIOI_PMEMBB_ReadStridedColl(ADIO_File fd, void *buf, int count, MPI_Dataty
                                   int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                                   int *error_code)
 {
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
     *error_code = MPI_SUCCESS;
     ADIOI_GEN_ReadStridedColl(fd, buf, count, datatype, file_ptr_type, offset, status, error_code);
 }

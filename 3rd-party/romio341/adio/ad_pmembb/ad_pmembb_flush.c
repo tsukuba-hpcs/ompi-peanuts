@@ -10,7 +10,7 @@ void ADIOI_PMEMBB_Flush(ADIO_File fd, int *error_code)
 {
     int ret;
     rpmbb_handler_t handler = (rpmbb_handler_t) fd->fs_ptr;
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
 
     *error_code = MPI_SUCCESS;
 

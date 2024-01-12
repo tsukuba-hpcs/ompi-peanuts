@@ -12,7 +12,7 @@ void ADIOI_PMEMBB_ReadContig(ADIO_File fd, void *buf, int count, MPI_Datatype da
 {
     rpmbb_handler_t handler = (rpmbb_handler_t) fd->fs_ptr;
     MPI_Count datatype_size;
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
 
     *error_code = MPI_SUCCESS;
 
@@ -24,6 +24,9 @@ void ADIOI_PMEMBB_ReadContig(ADIO_File fd, void *buf, int count, MPI_Datatype da
     ssize_t ret;
 
 #ifndef NDEBUG
+    int myrank, nprocs;
+    MPI_Comm_rank(fd->comm, &myrank);
+    MPI_Comm_size(fd->comm, &nprocs);
     FPRINTF(stdout, "[%d/%d]    reading (buf = %p, loc = %lld, sz = %lld)\n", myrank, nprocs, buf,
             (long long) absolute_offset, (long long) data_size);
 #endif
@@ -61,7 +64,7 @@ void ADIOI_PMEMBB_ReadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype d
                               int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                               int *error_code)
 {
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
     *error_code = MPI_SUCCESS;
     ADIOI_GEN_ReadStrided_naive(fd, buf, count, datatype, file_ptr_type, offset, status,
                                 error_code);

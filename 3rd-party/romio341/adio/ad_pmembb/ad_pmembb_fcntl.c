@@ -9,7 +9,7 @@
 
 void ADIOI_PMEMBB_Fcntl(ADIO_File fd, int flag, ADIO_Fcntl_t *fcntl_struct, int *error_code)
 {
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
 
     *error_code = MPI_SUCCESS;
 

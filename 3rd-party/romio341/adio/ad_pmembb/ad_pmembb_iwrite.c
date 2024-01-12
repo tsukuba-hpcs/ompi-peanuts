@@ -19,7 +19,7 @@ void ADIOI_PMEMBB_IwriteContig(ADIO_File fd, const void *buf, int count, MPI_Dat
 {
     ADIO_Status status;
     MPI_Count typesize, len;
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
 
     *error_code = MPI_SUCCESS;
 
@@ -35,7 +35,7 @@ void ADIOI_PMEMBB_IwriteStrided(ADIO_File fd, const void *buf, int count, MPI_Da
 {
     ADIO_Status status;
     MPI_Count typesize;
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
 
     *error_code = MPI_SUCCESS;
 

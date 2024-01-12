@@ -16,7 +16,7 @@ void ADIOI_PMEMBB_IreadContig(ADIO_File fd, void *buf, int count, MPI_Datatype d
 {
     ADIO_Status status;
     MPI_Count typesize, len;
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
 
     *error_code = MPI_SUCCESS;
 
@@ -33,7 +33,7 @@ void ADIOI_PMEMBB_IreadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype 
 {
     ADIO_Status status;
     MPI_Count typesize;
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
 
     MPI_Type_size_x(datatype, &typesize);
 

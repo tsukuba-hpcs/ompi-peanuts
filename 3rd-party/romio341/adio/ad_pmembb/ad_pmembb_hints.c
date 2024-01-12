@@ -10,7 +10,7 @@
 #endif
 void ADIOI_PMEMBB_SetInfo(ADIO_File fd, MPI_Info users_info, int *error_code)
 {
-    DEBUG_PRINT(fd->filename);
+    DEBUG_PRINT(fd->comm, fd->filename);
     *error_code = MPI_SUCCESS;
     ADIOI_GEN_SetInfo(fd, users_info, error_code);
 }
