@@ -32,7 +32,7 @@ struct ADIOI_Fns_struct ADIO_PMEMBB_operations = {
     ADIOI_PMEMBB_Flush,            /* Flush */
     ADIOI_PMEMBB_Resize,           /* Resize */
     ADIOI_PMEMBB_Delete,           /* Delete */
-    ADIOI_GEN_Feature,             /* Features */
+    ADIOI_PMEMBB_Feature,             /* Features */
     "PMEMBB: A Persistent Memory Burst Buffer",
     ADIOI_GEN_IreadStridedColl,  /* IreadStridedColl */
     ADIOI_GEN_IwriteStridedColl, /* IwriteStridedColl */

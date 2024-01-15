@@ -13,6 +13,7 @@ romio_other_sources +=                \
     adio/ad_pmembb/ad_pmembb_write.c  \
     adio/ad_pmembb/ad_pmembb_done.c   \
     adio/ad_pmembb/ad_pmembb_fcntl.c  \
+		adio/ad_pmembb/ad_pmembb_feature.c \
     adio/ad_pmembb/ad_pmembb_iread.c  \
     adio/ad_pmembb/ad_pmembb_iwrite.c \
     adio/ad_pmembb/ad_pmembb_wait.c   \
