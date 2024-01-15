@@ -13,6 +13,9 @@ extern rpmbb_store_t mca_hook_pmembb_rpmbb_store;
 void ADIOI_PMEMBB_Open(ADIO_File fd, int *error_code);
 void ADIOI_PMEMBB_OpenColl(ADIO_File fd, int rank, int access_mode, int *error_code);
 void ADIOI_PMEMBB_Close(ADIO_File fd, int *error_code);
+void ADIOI_PMEMBB_ReadAggregateContig(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
+                                      int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
+                                      int *error_code);
 void ADIOI_PMEMBB_ReadContig(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
                              int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                              int *error_code);
@@ -68,7 +71,7 @@ int ADIOI_PMEMBB_Feature(ADIO_File fd, int flag);
         } while (0)
 #else
 #    define DEBUG_PRINT(comm, filename) \
-        do {                      \
+        do {                            \
         } while (0)
 #endif
 
