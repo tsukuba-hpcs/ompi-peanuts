@@ -21,9 +21,7 @@ void ADIOI_PMEMBB_Close(ADIO_File fd, int *error_code)
       rpmbb_bb_close(handler);
     }
 
-    ADIOI_GEN_Close(fd, error_code);
-
     fd->fs_ptr = NULL;
     fd->fd_sys = -1;
-    DEBUG_PRINT(fd->comm, "exit");
+    fd->fd_direct = -1;
 }

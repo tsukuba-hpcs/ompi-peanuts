@@ -10,20 +10,44 @@
 void ADIOI_PMEMBB_Open(ADIO_File fd, int *error_code)
 {
     DEBUG_PRINT(fd->comm, fd->filename);
-    ADIOI_UFS_Open(fd, error_code);
+    int perm, old_mask, amode;
+    rpmbb_handler_t handler;
+    size_t file_size;
 
-    if (*error_code != MPI_SUCCESS) {
-        DEBUG_PRINT(fd->comm, "ADIOI_UFS_Open failed");
-        return;
+    if (fd->perm == ADIO_PERM_NULL) {
+        old_mask = umask(022);
+        umask(old_mask);
+        perm = old_mask ^ 0666;
+    } else
+        perm = fd->perm;
+
+    amode = 0;
+    if (fd->access_mode & ADIO_CREATE)
+        amode = amode | O_CREAT;
+    if (fd->access_mode & ADIO_RDONLY)
+        amode = amode | O_RDONLY;
+    if (fd->access_mode & ADIO_WRONLY)
+        amode = amode | O_WRONLY;
+    if (fd->access_mode & ADIO_RDWR)
+        amode = amode | O_RDWR;
+    if (fd->access_mode & ADIO_EXCL)
+        amode = amode | O_EXCL;
+
+    fd->fd_direct = -1;
+    fd->fd_sys = -1;
+    handler = rpmbb_store_open(mca_hook_pmembb_rpmbb_store, fd->comm, fd->filename, amode, perm);
+    fd->fs_ptr = (void *) handler;
+
+    if ((fd->fs_ptr != NULL) && (fd->access_mode & ADIO_APPEND)) {
+        FPRINTF(stderr, "WARNING: ADIO_APPEND not supported by PMEMBB\n");
+        rpmbb_bb_size(handler, &file_size);
+        fd->fp_ind = fd->fp_sys_posn = file_size;
     }
 
-    DEBUG_PRINT(fd->comm, "enter rpmbb_store_open_attach");
-    fd->fs_ptr = rpmbb_store_open_attach(mca_hook_pmembb_rpmbb_store, fd->comm, fd->fd_sys);
     if (fd->fs_ptr == NULL) {
-        DEBUG_PRINT(fd->comm, "rpmbb_store_open_attach failed");
-        *error_code = ADIOI_Err_create_code("ADIOI_PMEMBB_Open", fd->filename, errno);
-        return;
-    }
+        *error_code = ADIOI_Err_create_code(__func__, fd->filename, errno);
+    } else
+        *error_code = MPI_SUCCESS;
 }
 
 void ADIOI_PMEMBB_OpenColl(ADIO_File fd, int rank, int access_mode, int *error_code)
