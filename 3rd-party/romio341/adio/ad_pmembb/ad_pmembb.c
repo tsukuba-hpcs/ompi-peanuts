@@ -18,7 +18,11 @@ struct ADIOI_Fns_struct ADIO_PMEMBB_operations = {
     ADIOI_PMEMBB_SeekIndividual,   /* SeekIndividual */
     ADIOI_PMEMBB_Fcntl,            /* Fcntl */
     ADIOI_PMEMBB_SetInfo,          /* SetInfo */
-    ADIOI_PMEMBB_ReadStrided,      /* ReadStrided */
+#ifdef PMEMBB_AGGREGATE_READ
+    ADIOI_PMEMBB_ReadStrided,      /* Aggregated ReadStrided */
+#else
+    ADIOI_GEN_ReadStrided,         /* Non-aggregated ReadStrided */
+#endif
     ADIOI_PMEMBB_WriteStrided,     /* WriteStrided */
     ADIOI_PMEMBB_Close,            /* Close */
     ADIOI_PMEMBB_IreadContig,      /* IreadContig */
@@ -32,7 +36,7 @@ struct ADIOI_Fns_struct ADIO_PMEMBB_operations = {
     ADIOI_PMEMBB_Flush,            /* Flush */
     ADIOI_PMEMBB_Resize,           /* Resize */
     ADIOI_PMEMBB_Delete,           /* Delete */
-    ADIOI_PMEMBB_Feature,             /* Features */
+    ADIOI_PMEMBB_Feature,          /* Features */
     "PMEMBB: A Persistent Memory Burst Buffer",
     ADIOI_GEN_IreadStridedColl,  /* IreadStridedColl */
     ADIOI_GEN_IwriteStridedColl, /* IwriteStridedColl */

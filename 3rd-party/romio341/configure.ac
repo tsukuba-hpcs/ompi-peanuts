@@ -263,6 +263,22 @@ known_filesystems="m4_join([ ],known_filesystems_m4)"
 
 #
 # Defaults
+AC_ARG_ENABLE([pmembb-aggregate-read],
+    [AS_HELP_STRING([--enable-pmembb-aggregate-read],
+    [Enable pmembb aggregate read optimizations @<:@default=on@:>@])],
+    [case "${enableval}" in
+        yes) pmembb_aggregate_read=true ;;
+        no)  pmembb_aggregate_read=false ;;
+        *) AC_MSG_ERROR([bad value ${enableval} for --enable-pmembb-aggregate-read]) ;;
+    esac],
+    [pmembb_aggregate_read=true])
+
+AM_CONDITIONAL([PMEMBB_AGGREGATE_READ], [test x$pmembb_aggregate_read = xtrue])
+
+if test x$pmembb_aggregate_read = xtrue; then
+    CPPFLAGS="$CPPFLAGS -DPMEMBB_AGGREGATE_READ"
+fi
+
 AC_ARG_ENABLE(aio,[
 --enable-aio - Request use of asynchronous I/O routines (default)],
 [
