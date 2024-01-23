@@ -12,13 +12,17 @@ void ADIOI_PMEMBB_Close(ADIO_File fd, int *error_code)
     rpmbb_handler_t handler = (rpmbb_handler_t) fd->fs_ptr;
     DEBUG_PRINT(fd->comm, fd->filename);
 
-    if(handler != NULL) {
-      // ret = rpmbb_bb_sync(handler);
-      // if (ret != 0) {
-      //     *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
-      //     DEBUG_PRINT(fd->comm, "rpmbb_bb_sync failed");
-      // }
-      rpmbb_bb_close(handler);
+    if (handler != NULL) {
+        int comp_result;
+        MPI_Comm_compare(MPI_COMM_WORLD, fd->comm, &comp_result);
+        if (comp_result == MPI_IDENT) {
+            ret = rpmbb_bb_sync(handler);
+            if (ret != 0) {
+                *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
+                DEBUG_PRINT(fd->comm, "rpmbb_bb_sync failed");
+            }
+        }
+        rpmbb_bb_close(handler);
     }
 
     fd->fs_ptr = NULL;
