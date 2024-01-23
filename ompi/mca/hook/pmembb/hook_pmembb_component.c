@@ -70,6 +70,7 @@ char *mca_hook_pmembb_pmem_path = "/dev/dax0.0";
 size_t mca_hook_pmembb_pmem_size = 0;
 bool mca_hook_pmembb_save = true;
 bool mca_hook_pmembb_load = false;
+bool mca_hook_pmembb_enable = true;
 
 static int ompi_hook_pmembb_component_open(void)
 {
@@ -107,5 +108,10 @@ static int ompi_hook_pmembb_component_register(void)
                                            MCA_BASE_VAR_FLAG_SETTABLE, OPAL_INFO_LVL_3,
                                            MCA_BASE_VAR_SCOPE_READONLY, &mca_hook_pmembb_load);
 
+    // mca_hook_pmembb_enable
+    (void) mca_base_component_var_register(&mca_hook_pmembb_component.hookm_version, "enable",
+                                           "Enable pmembb", MCA_BASE_VAR_TYPE_BOOL, NULL, 0,
+                                           MCA_BASE_VAR_FLAG_SETTABLE, OPAL_INFO_LVL_3,
+                                           MCA_BASE_VAR_SCOPE_READONLY, &mca_hook_pmembb_enable);
     return OMPI_SUCCESS;
 }

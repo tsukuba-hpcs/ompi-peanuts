@@ -15,7 +15,7 @@ rpmbb_store_t mca_hook_pmembb_rpmbb_store = NULL;
 
 void ompi_hook_pmembb_mpi_init_bottom(int argc, char **argv, int requested, int *provided)
 {
-    if (mca_hook_pmembb_pmem_path == NULL) {
+    if (!mca_hook_pmembb_enable) {
         return;
     }
     mca_hook_pmembb_rpmbb_store = rpmbb_store_create(MPI_COMM_WORLD, mca_hook_pmembb_pmem_path,
