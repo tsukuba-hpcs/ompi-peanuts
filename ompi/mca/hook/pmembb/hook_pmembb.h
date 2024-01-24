@@ -28,6 +28,7 @@ extern char* mca_hook_pmembb_pmem_path;
 extern size_t mca_hook_pmembb_pmem_size;
 extern bool mca_hook_pmembb_save;
 extern bool mca_hook_pmembb_load;
+extern bool mca_hook_pmembb_enable;
 
 void ompi_hook_pmembb_mpi_init_bottom(int argc, char **argv, int requested, int *provided);
 
