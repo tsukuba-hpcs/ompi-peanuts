@@ -3,14 +3,14 @@
  *     See COPYRIGHT in top-level directory
  */
 
-#include "ad_pmembb.h"
+#include "ad_peanuts.h"
 #include "adioi.h"
 
-void ADIOI_PMEMBB_ReadAggregateContig(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
+void ADIOI_PEANUTS_ReadAggregateContig(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
                                       int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                                       int *error_code)
 {
-    rpmbb_handler_t handler = (rpmbb_handler_t) fd->fs_ptr;
+    peanuts_handler_t handler = (peanuts_handler_t) fd->fs_ptr;
     MPI_Count datatype_size;
     DEBUG_PRINT(fd->comm, fd->filename);
 
@@ -32,7 +32,7 @@ void ADIOI_PMEMBB_ReadAggregateContig(ADIO_File fd, void *buf, int count, MPI_Da
 #endif
 
     while (bytes_read < data_size) {
-        ret = rpmbb_bb_pread_aggregate(handler, (char *) buf + bytes_read, data_size - bytes_read,
+        ret = peanuts_bb_pread_aggregate(handler, (char *) buf + bytes_read, data_size - bytes_read,
                                        absolute_offset + bytes_read);
         if (ret < 0) {
             *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
@@ -60,17 +60,17 @@ void ADIOI_PMEMBB_ReadAggregateContig(ADIO_File fd, void *buf, int count, MPI_Da
 #endif
 }
 
-void ADIOI_PMEMBB_ReadContig(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
+void ADIOI_PEANUTS_ReadContig(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
                              int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                              int *error_code)
 {
     int ret;
-    ADIOI_PMEMBB_ReadAggregateContig(fd, buf, count, datatype, file_ptr_type, offset, status,
+    ADIOI_PEANUTS_ReadAggregateContig(fd, buf, count, datatype, file_ptr_type, offset, status,
                                      error_code);
     if (*error_code != MPI_SUCCESS) {
         return;
     }
-    ret = rpmbb_bb_wait((rpmbb_handler_t) fd->fs_ptr);
+    ret = peanuts_bb_wait((peanuts_handler_t) fd->fs_ptr);
     if (ret < 0) {
         *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
         fd->fp_sys_posn = -1;
@@ -78,7 +78,7 @@ void ADIOI_PMEMBB_ReadContig(ADIO_File fd, void *buf, int count, MPI_Datatype da
     }
 }
 
-void ADIOI_PMEMBB_ReadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype buftype,
+void ADIOI_PEANUTS_ReadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype buftype,
                               int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                               int *error_code)
 {
@@ -154,7 +154,7 @@ void ADIOI_PMEMBB_ReadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype b
                 ADIOI_Assert((((ADIO_Offset) (uintptr_t) buf) + userbuf_off)
                              == (ADIO_Offset) (uintptr_t) ((uintptr_t) buf + userbuf_off));
                 ADIOI_Assert(req_len == (int) req_len);
-                ADIOI_PMEMBB_ReadAggregateContig(fd, (char *) buf + userbuf_off, req_len, MPI_BYTE,
+                ADIOI_PEANUTS_ReadAggregateContig(fd, (char *) buf + userbuf_off, req_len, MPI_BYTE,
                                                  ADIO_EXPLICIT_OFFSET, req_off, &status1,
                                                  error_code);
                 if (*error_code != MPI_SUCCESS)
@@ -306,7 +306,7 @@ void ADIOI_PMEMBB_ReadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype b
                     ADIOI_Assert((((ADIO_Offset) (uintptr_t) buf) + userbuf_off)
                                  == (ADIO_Offset) (uintptr_t) ((uintptr_t) buf + userbuf_off));
                     ADIOI_Assert(req_len == (int) req_len);
-                    ADIOI_PMEMBB_ReadAggregateContig(fd, (char *) buf + userbuf_off, req_len,
+                    ADIOI_PEANUTS_ReadAggregateContig(fd, (char *) buf + userbuf_off, req_len,
                                                      MPI_BYTE, ADIO_EXPLICIT_OFFSET, req_off,
                                                      &status1, error_code);
                     if (*error_code != MPI_SUCCESS)
@@ -369,7 +369,7 @@ void ADIOI_PMEMBB_ReadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype b
                     ADIOI_Assert((((ADIO_Offset) (uintptr_t) buf) + userbuf_off)
                                  == (ADIO_Offset) (uintptr_t) ((uintptr_t) buf + userbuf_off));
                     ADIOI_Assert(req_len == (int) req_len);
-                    ADIOI_PMEMBB_ReadAggregateContig(fd, (char *) buf + userbuf_off, req_len,
+                    ADIOI_PEANUTS_ReadAggregateContig(fd, (char *) buf + userbuf_off, req_len,
                                                      MPI_BYTE, ADIO_EXPLICIT_OFFSET, req_off,
                                                      &status1, error_code);
                     if (*error_code != MPI_SUCCESS)
@@ -432,7 +432,7 @@ void ADIOI_PMEMBB_ReadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype b
      */
 #endif
 
-    ret = rpmbb_bb_wait((rpmbb_handler_t) fd->fs_ptr);
+    ret = peanuts_bb_wait((peanuts_handler_t) fd->fs_ptr);
     if (ret < 0) {
         *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
         return;

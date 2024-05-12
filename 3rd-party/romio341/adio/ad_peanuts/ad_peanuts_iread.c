@@ -3,14 +3,14 @@
  *     See COPYRIGHT in top-level directory
  */
 
-#include "ad_pmembb.h"
+#include "ad_peanuts.h"
 #include "adioi.h"
 
-/* ADIOI_PMEMBB_IreadContig()
+/* ADIOI_PEANUTS_IreadContig()
  *
  * Implemented by immediately calling ReadContig()
  */
-void ADIOI_PMEMBB_IreadContig(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
+void ADIOI_PEANUTS_IreadContig(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
                               int file_ptr_type, ADIO_Offset offset, ADIO_Request *request,
                               int *error_code)
 {
@@ -22,12 +22,12 @@ void ADIOI_PMEMBB_IreadContig(ADIO_File fd, void *buf, int count, MPI_Datatype d
 
     MPI_Type_size_x(datatype, &typesize);
     len = count * typesize;
-    ADIOI_PMEMBB_ReadContig(fd, buf, len, MPI_BYTE, file_ptr_type, offset, &status, error_code);
+    ADIOI_PEANUTS_ReadContig(fd, buf, len, MPI_BYTE, file_ptr_type, offset, &status, error_code);
 
     MPIO_Completed_request_create(&fd, len, error_code, request);
 }
 
-void ADIOI_PMEMBB_IreadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
+void ADIOI_PEANUTS_IreadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
                                int file_ptr_type, ADIO_Offset offset, ADIO_Request *request,
                                int *error_code)
 {
@@ -37,6 +37,6 @@ void ADIOI_PMEMBB_IreadStrided(ADIO_File fd, void *buf, int count, MPI_Datatype 
 
     MPI_Type_size_x(datatype, &typesize);
 
-    ADIOI_PMEMBB_ReadStrided(fd, buf, count, datatype, file_ptr_type, offset, &status, error_code);
+    ADIOI_PEANUTS_ReadStrided(fd, buf, count, datatype, file_ptr_type, offset, &status, error_code);
     MPIO_Completed_request_create(&fd, count * typesize, error_code, request);
 }

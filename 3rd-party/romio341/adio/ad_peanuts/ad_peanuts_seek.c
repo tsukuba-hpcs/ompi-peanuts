@@ -3,11 +3,11 @@
  *     See COPYRIGHT in top-level directory
  */
 
-#include "ad_pmembb.h"
+#include "ad_peanuts.h"
 #include "adio_extern.h"
 #include "adioi.h"
 
-/* ADIOI_PMEMBB_SeekIndividual()
+/* ADIOI_PEANUTS_SeekIndividual()
  *
  * Implements SEEK_SET only (and doesn't test for whence type); all
  * other types of whence must be converted before calling this.
@@ -16,7 +16,7 @@
  * terms of the etype relative to the filetype, so some calculations are
  * necessary.
  */
-ADIO_Offset ADIOI_PMEMBB_SeekIndividual(ADIO_File fd, ADIO_Offset offset, int whence,
+ADIO_Offset ADIOI_PEANUTS_SeekIndividual(ADIO_File fd, ADIO_Offset offset, int whence,
                                         int *error_code)
 {
     int myrank, nprocs;
@@ -34,7 +34,7 @@ ADIO_Offset ADIOI_PMEMBB_SeekIndividual(ADIO_File fd, ADIO_Offset offset, int wh
 
     MPI_Comm_size(fd->comm, &nprocs);
     MPI_Comm_rank(fd->comm, &myrank);
-    FPRINTF(stdout, "[%d/%d] ADIOI_PMEMBB_SeekIndividual called on %s\n", myrank, nprocs,
+    FPRINTF(stdout, "[%d/%d] ADIOI_PEANUTS_SeekIndividual called on %s\n", myrank, nprocs,
             fd->filename);
 
     ADIOI_Datatype_iscontig(fd->filetype, &filetype_is_contig);

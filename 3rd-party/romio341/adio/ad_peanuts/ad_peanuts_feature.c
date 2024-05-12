@@ -1,6 +1,6 @@
-#include "ad_pmembb.h"
+#include "ad_peanuts.h"
 
-int ADIOI_PMEMBB_Feature(ADIO_File fd, int flag)
+int ADIOI_PEANUTS_Feature(ADIO_File fd, int flag)
 {
     switch (flag) {
         case ADIO_SCALABLE_RESIZE:

@@ -63,9 +63,9 @@ extern struct ADIOI_Fns_struct ADIO_QUOBYTEFS_operations;
 extern void ADIOI_QUOBYTEFS_CreateAdapter(const char *, int *);
 #endif
 
-#ifdef ROMIO_PMEMBB
-/* prototypes are in adio/ad_pmembb/ad_pmembb.h */
-extern struct ADIOI_Fns_struct ADIO_PMEMBB_operations;
+#ifdef ROMIO_PEANUTS
+/* prototypes are in adio/ad_peanuts/ad_peanuts.h */
+extern struct ADIOI_Fns_struct ADIO_PEANUTS_operations;
 #endif
 
 #endif /* ADIOI_FS_PROTO_H_INCLUDED */

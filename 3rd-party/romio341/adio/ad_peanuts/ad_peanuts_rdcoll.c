@@ -3,10 +3,10 @@
  *     See COPYRIGHT in top-level directory
  */
 
-#include "ad_pmembb.h"
+#include "ad_peanuts.h"
 #include "adioi.h"
 
-void ADIOI_PMEMBB_ReadStridedColl(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
+void ADIOI_PEANUTS_ReadStridedColl(ADIO_File fd, void *buf, int count, MPI_Datatype datatype,
                                   int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                                   int *error_code)
 {

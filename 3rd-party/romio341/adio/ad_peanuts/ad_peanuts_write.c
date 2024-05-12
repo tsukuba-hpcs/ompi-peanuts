@@ -3,15 +3,15 @@
  *     See COPYRIGHT in top-level directory
  */
 
-#include "ad_pmembb.h"
+#include "ad_peanuts.h"
 #include "adioi.h"
 
-void ADIOI_PMEMBB_WriteContig(ADIO_File fd, const void *buf, int count, MPI_Datatype datatype,
+void ADIOI_PEANUTS_WriteContig(ADIO_File fd, const void *buf, int count, MPI_Datatype datatype,
                               int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                               int *error_code)
 {
     MPI_Count datatype_size;
-    rpmbb_handler_t handler = (rpmbb_handler_t) fd->fs_ptr;
+    peanuts_handler_t handler = (peanuts_handler_t) fd->fs_ptr;
     DEBUG_PRINT(fd->comm, fd->filename);
 
     *error_code = MPI_SUCCESS;
@@ -32,7 +32,7 @@ void ADIOI_PMEMBB_WriteContig(ADIO_File fd, const void *buf, int count, MPI_Data
 #endif
 
     while (bytes_written < data_size) {
-        ret = rpmbb_bb_pwrite(handler, (char *) buf + bytes_written, data_size - bytes_written,
+        ret = peanuts_bb_pwrite(handler, (char *) buf + bytes_written, data_size - bytes_written,
                               absolute_offset + bytes_written);
         if (ret < 0) {
             *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
@@ -59,7 +59,7 @@ void ADIOI_PMEMBB_WriteContig(ADIO_File fd, const void *buf, int count, MPI_Data
 #endif
 }
 
-void ADIOI_PMEMBB_WriteStrided(ADIO_File fd, const void *buf, int count, MPI_Datatype datatype,
+void ADIOI_PEANUTS_WriteStrided(ADIO_File fd, const void *buf, int count, MPI_Datatype datatype,
                                int file_ptr_type, ADIO_Offset offset, ADIO_Status *status,
                                int *error_code)
 {

@@ -3,11 +3,11 @@
  *     See COPYRIGHT in top-level directory
  */
 
-#include "ad_pmembb.h"
+#include "ad_peanuts.h"
 #include "adio_extern.h"
 #include "adioi.h"
 
-void ADIOI_PMEMBB_Fcntl(ADIO_File fd, int flag, ADIO_Fcntl_t *fcntl_struct, int *error_code)
+void ADIOI_PEANUTS_Fcntl(ADIO_File fd, int flag, ADIO_Fcntl_t *fcntl_struct, int *error_code)
 {
     DEBUG_PRINT(fd->comm, fd->filename);
 
@@ -15,10 +15,10 @@ void ADIOI_PMEMBB_Fcntl(ADIO_File fd, int flag, ADIO_Fcntl_t *fcntl_struct, int 
 
     switch (flag) {
     case ADIO_FCNTL_GET_FSIZE:
-        rpmbb_handler_t handler = (rpmbb_handler_t) fd->fs_ptr;
+        peanuts_handler_t handler = (peanuts_handler_t) fd->fs_ptr;
         size_t fsize;
         int ret;
-        ret = rpmbb_bb_size(handler, &fsize);
+        ret = peanuts_bb_size(handler, &fsize);
         if(ret != 0) {
             *error_code = ADIOI_Err_create_code(__func__, fd->filename, -ret);
             return;

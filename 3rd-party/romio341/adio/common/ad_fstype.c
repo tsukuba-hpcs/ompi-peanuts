@@ -172,8 +172,8 @@ static struct ADIO_FSTypes fstypes[] = {
 #ifdef ROMIO_DAOS
     {&ADIO_DAOS_operations, ADIO_DAOS, "daos:"},
 #endif
-#ifdef ROMIO_PMEMBB
-    {&ADIO_PMEMBB_operations, ADIO_PMEMBB, "pmembb:"},
+#ifdef ROMIO_PEANUTS
+    {&ADIO_PEANUTS_operations, ADIO_PEANUTS, "peanuts:"},
 #endif
 #ifdef ROMIO_TESTFS
     {&ADIO_TESTFS_operations, ADIO_TESTFS, "testfs:"},

@@ -3,15 +3,15 @@
  *     See COPYRIGHT in top-level directory
  */
 
-#include "ad_pmembb.h"
+#include "ad_peanuts.h"
 #include "adio/ad_ufs/ad_ufs.h"
 #include "adioi.h"
 
-void ADIOI_PMEMBB_Open(ADIO_File fd, int *error_code)
+void ADIOI_PEANUTS_Open(ADIO_File fd, int *error_code)
 {
     DEBUG_PRINT(fd->comm, fd->filename);
     int perm, old_mask, amode;
-    rpmbb_handler_t handler;
+    peanuts_handler_t handler;
     size_t file_size;
 
     if (fd->perm == ADIO_PERM_NULL) {
@@ -35,12 +35,12 @@ void ADIOI_PMEMBB_Open(ADIO_File fd, int *error_code)
 
     fd->fd_direct = -1;
     fd->fd_sys = -1;
-    handler = rpmbb_store_open(mca_hook_pmembb_rpmbb_store, fd->comm, fd->filename, amode, perm);
+    handler = peanuts_store_open(mca_hook_peanuts_peanuts_store, fd->comm, fd->filename, amode, perm);
     fd->fs_ptr = (void *) handler;
 
     if ((fd->fs_ptr != NULL) && (fd->access_mode & ADIO_APPEND)) {
-        FPRINTF(stderr, "WARNING: ADIO_APPEND not supported by PMEMBB\n");
-        rpmbb_bb_size(handler, &file_size);
+        FPRINTF(stderr, "WARNING: ADIO_APPEND not supported by PEANUTS\n");
+        peanuts_bb_size(handler, &file_size);
         fd->fp_ind = fd->fp_sys_posn = file_size;
     }
 
@@ -50,7 +50,7 @@ void ADIOI_PMEMBB_Open(ADIO_File fd, int *error_code)
         *error_code = MPI_SUCCESS;
 }
 
-void ADIOI_PMEMBB_OpenColl(ADIO_File fd, int rank, int access_mode, int *error_code)
+void ADIOI_PEANUTS_OpenColl(ADIO_File fd, int rank, int access_mode, int *error_code)
 {
     DEBUG_PRINT(fd->comm, fd->filename);
 

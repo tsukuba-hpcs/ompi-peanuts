@@ -249,7 +249,7 @@ dnl An m4 macro for use with m4_foreach_w and friends.  You should modify this
 dnl list if you want to add a known file system.  The list is just whitespace
 dnl separated, so you can use newlines and tabs as well.
 m4_define([known_filesystems_m4_w],
-          [pmembb daos nfs ufs pvfs2 testfs xfs panfs lustre gpfs ime quobytefs])dnl
+          [peanuts daos nfs ufs pvfs2 testfs xfs panfs lustre gpfs ime quobytefs])dnl
 dnl
 dnl An m4 macro for use with m4_foreach and friends.  Expands to a quoted list of
 dnl quoted elements.  A bit easier to use without unintended expansion than the
@@ -263,20 +263,20 @@ known_filesystems="m4_join([ ],known_filesystems_m4)"
 
 #
 # Defaults
-AC_ARG_ENABLE([pmembb-aggregate-read],
-    [AS_HELP_STRING([--enable-pmembb-aggregate-read],
-    [Enable pmembb aggregate read optimizations @<:@default=on@:>@])],
+AC_ARG_ENABLE([peanuts-aggregate-read],
+    [AS_HELP_STRING([--enable-peanuts-aggregate-read],
+    [Enable peanuts aggregate read optimizations @<:@default=on@:>@])],
     [case "${enableval}" in
-        yes) pmembb_aggregate_read=true ;;
-        no)  pmembb_aggregate_read=false ;;
-        *) AC_MSG_ERROR([bad value ${enableval} for --enable-pmembb-aggregate-read]) ;;
+        yes) peanuts_aggregate_read=true ;;
+        no)  peanuts_aggregate_read=false ;;
+        *) AC_MSG_ERROR([bad value ${enableval} for --enable-peanuts-aggregate-read]) ;;
     esac],
-    [pmembb_aggregate_read=true])
+    [peanuts_aggregate_read=true])
 
-AM_CONDITIONAL([PMEMBB_AGGREGATE_READ], [test x$pmembb_aggregate_read = xtrue])
+AM_CONDITIONAL([PEANUTS_AGGREGATE_READ], [test x$peanuts_aggregate_read = xtrue])
 
-if test x$pmembb_aggregate_read = xtrue; then
-    CPPFLAGS="$CPPFLAGS -DPMEMBB_AGGREGATE_READ"
+if test x$peanuts_aggregate_read = xtrue; then
+    CPPFLAGS="$CPPFLAGS -DPEANUTS_AGGREGATE_READ"
 fi
 
 AC_ARG_ENABLE(aio,[
@@ -1083,8 +1083,8 @@ if test -n "$file_system_quobytefs" ; then
 	PAC_APPEND_FLAG([-lquobyte],[LIBS])
 fi
 
-if test -n "$file_system_pmembb"; then
-  AC_DEFINE(ROMIO_PMEMBB,1,[Define for ROMIO with PMEMBB])
+if test -n "$file_system_peanuts"; then
+  AC_DEFINE(ROMIO_PEANUTS,1,[Define for ROMIO with PEANUTS])
 fi
 
 #
@@ -1798,7 +1798,7 @@ AM_PROG_LIBTOOL
 
 # Open MPI: setup the AM_CONDITIONALs to build the different adio devices
  m4_foreach([my_fs],
-  [gpfs, gridftp, hfs, lustre, nfs, ntfs, panfs, pfs, pvfs, piofs, pvfs, pvfs2, pmembb, sfs, testfs, ufs, xfs, zoidfs],
+  [gpfs, gridftp, hfs, lustre, nfs, ntfs, panfs, pfs, pvfs, piofs, pvfs, pvfs2, peanuts, sfs, testfs, ufs, xfs, zoidfs],
   [AM_CONDITIONAL(BUILD_[]AS_TR_CPP(my_fs), [test -n "$file_system_]my_fs["])])
 
 # support gcov test coverage information

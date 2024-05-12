@@ -58,7 +58,7 @@ MPI_ERR_IO
     MPIR_ERR_DEFERRED "independent IO attempted even though no_indep_rw hint given"
     MPIR_ERR_NO_GPFS "ROMIO has not been configured to use the GPFS file system"
     MPIR_ERR_NO_IME "ROMIO has not been configured to use the IME burst buffer"
-    MPIR_ERR_NO_PMEMBB "ROMIO has not been configured to use the PMEMBB"
+    MPIR_ERR_NO_PEANUTS "ROMIO has not been configured to use the PEANUTS"
 
 MPI_ERR_COMM
     MPIR_ERR_COMM_NULL (null communicator. from MPICH)

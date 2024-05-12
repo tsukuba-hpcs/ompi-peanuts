@@ -3,10 +3,10 @@
  *     See COPYRIGHT in top-level directory
  */
 
-#include "ad_pmembb.h"
+#include "ad_peanuts.h"
 #include "adioi.h"
 
-void ADIOI_PMEMBB_Delete(const char *filename, int *error_code)
+void ADIOI_PEANUTS_Delete(const char *filename, int *error_code)
 {
     int err;
     DEBUG_PRINT(MPI_COMM_SELF, filename);
@@ -17,7 +17,7 @@ void ADIOI_PMEMBB_Delete(const char *filename, int *error_code)
         return;
     }
 
-    rpmbb_store_unlink(mca_hook_pmembb_rpmbb_store, filename);
+    peanuts_store_unlink(mca_hook_peanuts_peanuts_store, filename);
 
     *error_code = MPI_SUCCESS;
 }
